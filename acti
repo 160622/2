@@ -1,0 +1,54 @@
+#sigmoid
+import numpy as np
+import matplotlib.pyplot as plt
+
+Y=[]
+def sig(x):
+    return 1/(1+np.exp(-x))
+
+X=np.linspace(-10,10,50)
+
+z=sig(X)
+print(z)
+plt.xlabel('X')
+plt.ylabel("sigmoid(x)")
+plt.plot(X,z)
+plt.show() 
+
+#tanh
+import numpy as np
+import matplotlib.pyplot as plt
+
+Y=[]
+def tanh(x):
+    return ((np.exp(x)-np.exp(-x))/(np.exp(x)+np.exp(-x)))
+
+X=np.linspace(-10,10,50)
+
+z=tanh(X)
+print(z)
+plt.xlabel('X')
+plt.ylabel("tanh(x)")
+plt.plot(X,z)
+plt.show()
+
+
+#relu
+import numpy as np
+import matplotlib.pyplot as plt
+
+Y=[]
+def relu(x):
+    return max(0,x)
+
+X=np.linspace(-10,10,50)
+
+for x in X:
+    y=max(0,x)
+    Y.append(float(y)) # Convert to Python float
+
+print(Y)
+plt.xlabel('X')
+plt.ylabel("ReLu(X)")
+plt.plot(X,Y)
+plt.show()
