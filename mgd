@@ -1,0 +1,51 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define a simple quadratic function
+def cost_function(w):
+    return (w - 5) ** 2
+
+# Define the gradient of the cost function
+def gradient(w):
+    return 2 * (w - 5)
+
+# Momentum Gradient Descent
+def momentum_gd(learning_rate=0.1, momentum=0.9, n_iterations=50, initial_w=0):
+    w = initial_w
+    v = 0  # Velocity starts at zero
+    w_history = []  # To store the value of w after every iteration
+    cost_history = []  # To store the cost after every iteration
+
+    for i in range(n_iterations):
+        grad = gradient(w)
+        v = momentum * v - learning_rate * grad  # Update velocity
+        w += v  # Update weights using velocity
+        
+        w_history.append(w)
+        cost_history.append(cost_function(w))
+        
+        print(f"Iteration {i+1}: w = {w:.4f}, cost = {cost_history[-1]:.4f}")
+
+    return w_history, cost_history
+
+# Run Momentum GD
+w_history, cost_history = momentum_gd()
+
+# Plotting the results
+plt.figure(figsize=(12, 6))
+
+# Plotting cost over iterations
+plt.subplot(1, 2, 1)
+plt.plot(cost_history)
+plt.title("Cost Function over Iterations")
+plt.xlabel("Iteration")
+plt.ylabel("Cost")
+
+# Plotting w over iterations
+plt.subplot(1, 2, 2)
+plt.plot(w_history)
+plt.title("Weight (w) over Iterations")
+plt.xlabel("Iteration")
+plt.ylabel("w")
+
+plt.show()
