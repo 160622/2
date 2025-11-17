@@ -1,0 +1,82 @@
+import numpy as np
+
+# Step 1: Standardize the dataset
+def standardize_data(X):
+    mean = np.mean(X, axis=0)
+    std_dev = np.std(X, axis=0)
+    X_standardized = (X - mean) / std_dev
+    print("after Standardized data set")
+    print(X_standardized)
+    return X_standardized
+
+# Step 2: Compute the covariance matrix
+def compute_covariance_matrix(X):
+    return np.cov(X.T)
+
+# Step 3: Compute eigenvalues and eigenvectors
+def compute_eigenvectors_values(cov_matrix):
+    eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
+    return eigenvalues, eigenvectors
+
+# Step 4: Sort eigenvectors by eigenvalues (in descending order)
+def sort_eigenvectors(eigenvalues, eigenvectors):
+    idx = np.argsort(eigenvalues)[::-1]
+    sorted_eigenvalues = eigenvalues[idx]
+    sorted_eigenvectors = eigenvectors[:, idx]
+    return sorted_eigenvalues, sorted_eigenvectors
+
+# Step 5: Project the data onto the principal components
+def project_data(X, eigenvectors, num_components):
+    # Use only the first 'num_components' eigenvectors
+    eigenvectors_subset = eigenvectors[:, :num_components]
+    X_pca = np.dot(X, eigenvectors_subset)
+    return X_pca
+
+# PCA implementation
+def pca(X, num_components):
+    # Step 1: Standardize the dataset
+    X_standardized = standardize_data(X)
+    
+    # Step 2: Compute the covariance matrix
+    cov_matrix = compute_covariance_matrix(X_standardized)
+    
+    # Step 3: Compute eigenvalues and eigenvectors
+    eigenvalues, eigenvectors = compute_eigenvectors_values(cov_matrix)
+    
+    # Step 4: Sort the eigenvalues and eigenvectors
+    sorted_eigenvalues, sorted_eigenvectors = sort_eigenvectors(eigenvalues, eigenvectors)
+    
+    # Step 5: Project the data onto the principal components
+    X_pca = project_data(X_standardized, sorted_eigenvectors, num_components)
+    
+    return X_pca, sorted_eigenvalues, sorted_eigenvectors
+
+# Example usage:
+
+def main():
+    # Sample data (4 samples, 3 features)
+    X = np.array([[340,360,417],
+                [318,342,391],
+                 [362,406,419],
+                 [348,396,461]])
+
+    print("Original Data (X):")
+    print(X)
+
+
+    # Perform PCA to reduce the dataset to 2 components
+    num_components = 2
+    X_pca, eigenvalues, eigenvectors = pca(X, num_components)
+
+    
+
+    print("\nPrincipal Components (after PCA):")
+    print(X_pca)
+
+    print("\nEigenvalues:")
+    print(eigenvalues)
+
+    print("\nEigenvectors:")
+    print(eigenvectors)
+
+main()
