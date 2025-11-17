@@ -1,0 +1,48 @@
+#demo of perceptron
+import numpy as np 
+##
+def sigmoid (x):
+    return 1/(1 + np.exp(-x))
+##
+##def sigmoid_derivative(x):
+##    return x * (1 - x)
+
+#Input datasets
+inputs = np.array([[1,1],[0,0],[1,0],[0,1]])
+y = np.array([[1],[1],[0],[0]])
+w1= np.array([1,1])
+w2= np.array([1,-1])
+w3= np.array([1,1])
+b1=-1.5
+b2=1
+b3=-0.5
+# importing Python library 
+import numpy as np 
+  
+# define Unit Step Function 
+def unitStep(v): 
+    if v > 0: 
+       return 1
+    else: 
+        return 0
+  
+# design Perceptron Model 
+def mul_perceptronModel(x, w1,w2, w3,b1,b2,b3): 
+    h1 = np.dot(w1, x) + b1
+    h1=unitStep(h1)
+    #h1=sigmoid(h1)
+    h2=np.dot(w2,x)+b2
+    h2=unitStep(h2)
+    #h2=sigmoid(h2)
+    #print(h1,h2)
+    h=np.array([h1,h2])
+    out=np.dot(w3,h)+b3
+    py = unitStep(out)
+    #py=sigmoid(v)
+    return py 
+
+for i in range(0,len(inputs)):
+    x=inputs[i]
+    py=mul_perceptronModel(x, w1,w2,w3, b1,b2,b3)
+    print("XNOR({}) = actual{} and predected [{}]".format(x, y[i], py)) 
+ 
