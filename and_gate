@@ -1,51 +1,44 @@
-#and_gate
 import numpy as np
 
-# Input features
+# Input features and target output for AND gate
 input_features = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-print("Input features shape:", input_features.shape)
-
-# Target outputs for NAND gate
-target_output = np.array([1, 1, 1, 0])
-print("Target output shape:", target_output.shape)
-print("Target output:", target_output)
+target_output = np.array([0, 0, 0, 1])
 
 # Initialize weights and bias
 weights = np.array([0.1, 0.2])
-print("Initial weights:", weights)
 bias = 0.3
+lr = 0.1 # Learning rate
 
-# Learning rate
-lr = 0.1
+# Activation function and its derivative
+def tanh(x):
+    return np.tanh(x)
+
+def tanh_derivative(x): # x here is the output of tanh
+    return 1 - x**2
 
 # Training loop
 for epoch in range(10000):
     total_error = 0
     for inputs, label in zip(input_features, target_output):
-        # Feedforward
         weighted_sum = np.dot(inputs, weights) + bias
-        output = np.tanh(weighted_sum) # Inlined tanh
+        output = tanh(weighted_sum)
 
-        # Error
         error = label - output
         total_error += abs(error)
 
-        # Weight update using derivative of tanh (inlined)
-        delta = error * (1 - output**2)
+        delta = error * tanh_derivative(output)
         weights += lr * delta * inputs
         bias += lr * delta
 
     if total_error < 0.01:
         break
 
-# Final weights and bias
 print("Final weights:", weights)
 print("Final bias:", bias)
 
-# Testing
+# Testing the trained perceptron
 print("Testing the trained perceptron (using threshold at 0.5):")
 for inputs, label in zip(input_features, target_output):
-    weighted_sum = np.dot(inputs, weights) + bias
-    output = np.tanh(weighted_sum) # Inlined tanh
+    output = tanh(np.dot(inputs, weights) + bias)
     predicted_label = 1 if output >= 0.5 else 0
     print(f"Input: {inputs}, Predicted Output: {predicted_label}, Target Output: {label}")
