@@ -1,0 +1,59 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the cost function
+def cost_function(w):
+    return (w - 5) ** 2
+
+# Define the gradient of the cost function
+def gradient(w):
+    return 2 * (w - 5)
+
+# Nesterov Accelerated Gradient Descent
+def nesterov_accelerated_gd(learning_rate=0.1, momentum=0.9, n_iterations=50, initial_w=0):
+    w = initial_w
+    v = 0  # Initialize velocity
+    w_history = []  # To store weights
+    cost_history = []  # To store costs
+
+    for i in range(n_iterations):
+        # Look-ahead position
+        w_look = w + momentum * v
+        grad = gradient(w_look)
+        
+        # Update velocity
+        v = momentum * v - learning_rate * grad
+        
+        # Update weight
+        w += v
+        
+        # Store history
+        w_history.append(w)
+        cost_history.append(cost_function(w))
+        
+        print(f"Iteration {i+1}: w = {w:.4f}, cost = {cost_history[-1]:.4f}")
+
+    return w_history, cost_history
+
+# Run Nesterov Accelerated GD
+w_history, cost_history = nesterov_accelerated_gd()
+
+# Plotting the results
+plt.figure(figsize=(12, 5))
+
+# Plot Cost Function over Iterations
+plt.subplot(1, 2, 1)
+plt.plot(cost_history, marker='o')
+plt.title('Cost Function over Iterations')
+plt.xlabel('Iteration')
+plt.ylabel('Cost')
+
+# Plot Weight (w) over Iterations
+plt.subplot(1, 2, 2)
+plt.plot(w_history, marker='o', color='orange')
+plt.title('Weight (w) over Iterations')
+plt.xlabel('Iteration')
+plt.ylabel('w')
+
+plt.tight_layout()
+plt.show()
