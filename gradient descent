@@ -1,0 +1,20 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+Y=[]
+def sqr(x):
+    return pow(x,2)
+
+X=np.linspace(-10,10,50)
+
+##for x in X:
+##    y=sig(x)
+##    Y.append(y)
+
+z=sqr(X)
+print(z)
+plt.xlabel('X')
+plt.ylabel("sqr(x)")
+plt.plot(X,z)
+plt.show()
+    
